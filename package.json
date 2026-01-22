@@ -1,0 +1,112 @@
+{
+  "name": "branchai",
+  "displayName": "BranchAI",
+  "description": "AI-powered Git branch name generator for VSCode",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.108.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:branchai.generateBranchName",
+    "onCommand:branchai.generateBranchFromCommitMessage"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "branchai.generateBranchName",
+        "title": "Generate Branch Name (from Git Diff)",
+        "category": "BranchAI"
+      },
+      {
+        "command": "branchai.generateBranchFromCommitMessage",
+        "title": "Generate Branch Name (from Commit Message)",
+        "category": "BranchAI"
+      },
+      {
+        "command": "branchai.openSettings",
+        "title": "Open Settings",
+        "category": "BranchAI"
+      }
+    ],
+    "configuration": {
+      "title": "BranchAI",
+      "properties": {
+        "branchai.apiEndpoint": {
+          "type": "string",
+          "default": "https://api.openai.com/v1",
+          "description": "Base URL for the OpenAI-compatible API endpoint",
+          "order": 1
+        },
+        "branchai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for authentication (stored securely in VSCode settings)",
+          "order": 2
+        },
+        "branchai.model": {
+          "type": "string",
+          "default": "gpt-3.5-turbo",
+          "description": "Model name to use for generating branch names (e.g., gpt-3.5-turbo, gpt-4)",
+          "order": 3
+        },
+        "branchai.timeout": {
+          "type": "number",
+          "default": 30000,
+          "minimum": 5000,
+          "maximum": 120000,
+          "description": "Request timeout in milliseconds (5-120 seconds)",
+          "order": 4
+        },
+        "branchai.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Temperature for AI response randomness (0 = deterministic, 2 = very creative)",
+          "order": 5
+        },
+        "branchai.suggestionCount": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Number of branch name suggestions to generate (1-10)",
+          "order": 6
+        },
+        "branchai.defaultInputMode": {
+          "type": "string",
+          "default": "diff",
+          "enum": ["diff", "commit-message"],
+          "enumDescriptions": [
+            "Use git diff to generate branch names (default)",
+            "Prompt user for commit message to generate branch names"
+          ],
+          "description": "Default input mode for generating branch names",
+          "order": 7
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.108.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.52.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
