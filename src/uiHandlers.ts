@@ -6,6 +6,15 @@ import { GitOperations, GitOperationError } from './gitOperations';
  * UI Handlers for BranchAI extension
  */
 export class UIHandlers {
+	private static extensionContext: vscode.ExtensionContext | undefined;
+
+	/**
+	 * Initialize the UI handlers with extension context
+	 */
+	public static initialize(context: vscode.ExtensionContext): void {
+		this.extensionContext = context;
+	}
+
 	/**
 	 * Generate branch names and show quick pick selection
 	 */
@@ -433,6 +442,7 @@ export class UIHandlers {
 	 * Open BranchAI settings
 	 */
 	public static openSettings(): void {
-		vscode.commands.executeCommand('workbench.action.openSettings', '@ext:branchai');
+		const extensionId = this.extensionContext?.extension.id || 'branchai';
+		vscode.commands.executeCommand('workbench.action.openSettings', `@ext:${extensionId}`);
 	}
 }

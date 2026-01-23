@@ -9,6 +9,9 @@ import { AIService, loadAIConfiguration } from './aiService';
 export function activate(context: vscode.ExtensionContext) {
 	console.log('BranchAI extension is now active!');
 
+	// Initialize UI handlers with extension context
+	UIHandlers.initialize(context);
+
 	// Register the generate branch name command
 	const generateBranchCommand = vscode.commands.registerCommand(
 		'branchai.generateBranchName',
