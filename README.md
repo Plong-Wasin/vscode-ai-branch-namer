@@ -38,11 +38,12 @@ BranchAI requires configuration to connect to your AI service provider. Configur
 
 ### Optional Settings
 
-| Setting | Description | Default | Range |
-|---------|-------------|---------|-------|
+| Setting | Description | Default | Range/Values |
+|---------|-------------|---------|-------------|
 | `branchai.timeout` | Request timeout in milliseconds | `30000` (30s) | 5000-120000 |
 | `branchai.temperature` | Temperature for AI response randomness | `0.7` | 0-2 |
 | `branchai.suggestionCount` | Number of branch name suggestions to generate | `5` | 1-10 |
+| `branchai.reasoningEffort` | Reasoning effort for models with extended thinking | `medium` | none, minimal, low, medium, high, xhigh |
 
 ### Configuration Example
 
@@ -53,7 +54,55 @@ BranchAI requires configuration to connect to your AI service provider. Configur
   "branchai.model": "gpt-3.5-turbo",
   "branchai.timeout": 30000,
   "branchai.temperature": 0.7,
-  "branchai.suggestionCount": 5
+  "branchai.suggestionCount": 5,
+  "branchai.reasoningEffort": "medium"
+}
+```
+
+### Reasoning Effort Configuration
+
+The `reasoningEffort` setting controls the amount of reasoning tokens used by AI models that support extended thinking (e.g., gpt-5.1, gpt-5-pro). This parameter allows you to trade off between response speed/quality and cost.
+
+**Available values:**
+- `none` - No extended reasoning (fastest, lowest cost)
+- `minimal` - Minimal reasoning tokens
+- `low` - Low reasoning effort
+- `medium` - Balanced reasoning effort (default)
+- `high` - High reasoning effort (more thoughtful responses)
+- `xhigh` - Extra high reasoning effort (most thoughtful, slowest, highest cost)
+
+**Model-specific defaults:**
+- `gpt-5.1`: defaults to `none`
+- `gpt-5-pro`: defaults to `high`
+- Other models: defaults to `medium`
+
+**Trade-offs:**
+- **Lower values** (none, minimal): Faster responses, lower cost, less detailed reasoning
+- **Higher values** (high, xhigh): More thoughtful responses, higher cost, slower responses
+
+**Example configurations:**
+
+For fast, cost-effective branch name generation:
+```json
+{
+  "branchai.model": "gpt-5.1",
+  "branchai.reasoningEffort": "none"
+}
+```
+
+For high-quality, thoughtful suggestions with gpt-5-pro:
+```json
+{
+  "branchai.model": "gpt-5-pro",
+  "branchai.reasoningEffort": "high"
+}
+```
+
+For balanced performance with standard models:
+```json
+{
+  "branchai.model": "gpt-4",
+  "branchai.reasoningEffort": "medium"
 }
 ```
 

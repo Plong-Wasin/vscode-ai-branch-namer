@@ -1,6 +1,11 @@
 import * as vscode from 'vscode';
 
 /**
+ * Valid reasoning effort values for AI models that support extended thinking
+ */
+export type ReasoningEffort = 'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh';
+
+/**
  * Configuration interface for AI service settings
  */
 export interface AIConfiguration {
@@ -10,6 +15,7 @@ export interface AIConfiguration {
 	timeout: number;
 	temperature: number;
 	suggestionCount: number;
+	reasoningEffort?: ReasoningEffort;
 }
 
 /**
@@ -37,8 +43,9 @@ export class AIService {
 	/**
 	 * Validate the AI configuration
 	 */
-	public validateConfiguration(): { valid: boolean; missing: string[] } {
+	public validateConfiguration(): { valid: boolean; missing: string[]; invalid: string[] } {
 		const missing: string[] = [];
+		const invalid: string[] = [];
 
 		if (!this.config.apiKey) {
 			missing.push('API Key');
@@ -50,9 +57,18 @@ export class AIService {
 			missing.push('Model');
 		}
 
+		// Validate reasoning_effort if provided
+		if (this.config.reasoningEffort) {
+			const validReasoningEfforts: ReasoningEffort[] = ['none', 'minimal', 'low', 'medium', 'high', 'xhigh'];
+			if (!validReasoningEfforts.includes(this.config.reasoningEffort)) {
+				invalid.push(`Reasoning Effort (invalid value: ${this.config.reasoningEffort})`);
+			}
+		}
+
 		return {
-			valid: missing.length === 0,
-			missing
+			valid: missing.length === 0 && invalid.length === 0,
+			missing,
+			invalid
 		};
 	}
 
@@ -67,8 +83,15 @@ export class AIService {
 		// Validate configuration
 		const validation = this.validateConfiguration();
 		if (!validation.valid) {
+			const errors: string[] = [];
+			if (validation.missing.length > 0) {
+				errors.push(`Missing: ${validation.missing.join(', ')}`);
+			}
+			if (validation.invalid.length > 0) {
+				errors.push(`Invalid: ${validation.invalid.join(', ')}`);
+			}
 			throw new AIServiceError(
-				`Configuration incomplete. Please configure: ${validation.missing.join(', ')}`,
+				`Configuration error. ${errors.join('; ')}`,
 				'CONFIG_ERROR'
 			);
 		}
@@ -152,23 +175,31 @@ ${context.trim()}`;
 		const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
 		console.log(prompt);
 		try {
+			// Build request body
+			const requestBody: any = {
+				model: this.config.model,
+				messages: [
+					{
+						role: 'system',
+						content: prompt
+					}
+				],
+				temperature: this.config.temperature,
+				max_tokens: 200
+			};
+
+			// Include reasoning_effort if configured (for models that support it)
+			if (this.config.reasoningEffort) {
+				requestBody.reasoning_effort = this.config.reasoningEffort;
+			}
+
 			const response = await fetch(`${this.config.apiEndpoint}/chat/completions`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Authorization': `Bearer ${this.config.apiKey}`
 				},
-				body: JSON.stringify({
-					model: this.config.model,
-					messages: [
-						{
-							role: 'system',
-							content: prompt
-						}
-					],
-					temperature: this.config.temperature,
-					max_tokens: 200
-				}),
+				body: JSON.stringify(requestBody),
 				signal: controller.signal
 			});
 
@@ -265,16 +296,38 @@ ${context.trim()}`;
 export function loadAIConfiguration(): AIConfiguration {
 	const config = vscode.workspace.getConfiguration('branchai');
 	const suggestionCount = config.get<number>('suggestionCount', 5);
+	const model = config.get<string>('model', 'gpt-3.5-turbo');
 	
 	// Validate suggestion count is within range (1-10)
 	const validatedCount = Math.max(1, Math.min(10, suggestionCount));
 	
+	// Load and validate reasoning effort
+	const reasoningEffort = config.get<string>('reasoningEffort', 'medium');
+	const validReasoningEfforts: ReasoningEffort[] = ['none', 'minimal', 'low', 'medium', 'high', 'xhigh'];
+	let validatedReasoningEffort: ReasoningEffort | undefined;
+	
+	if (validReasoningEfforts.includes(reasoningEffort as ReasoningEffort)) {
+		validatedReasoningEffort = reasoningEffort as ReasoningEffort;
+	}
+	
+	// Apply model-specific default logic for reasoning effort
+	if (!validatedReasoningEffort) {
+		if (model === 'gpt-5.1') {
+			validatedReasoningEffort = 'none';
+		} else if (model === 'gpt-5-pro') {
+			validatedReasoningEffort = 'high';
+		} else {
+			validatedReasoningEffort = 'medium';
+		}
+	}
+	
 	return {
 		apiEndpoint: config.get<string>('apiEndpoint', 'https://api.openai.com/v1'),
 		apiKey: config.get<string>('apiKey', ''),
-		model: config.get<string>('model', 'gpt-3.5-turbo'),
+		model: model,
 		timeout: config.get<number>('timeout', 30000),
 		temperature: config.get<number>('temperature', 0.7),
-		suggestionCount: validatedCount
+		suggestionCount: validatedCount,
+		reasoningEffort: validatedReasoningEffort
 	};
 }

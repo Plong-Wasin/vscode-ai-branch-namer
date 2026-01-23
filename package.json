@@ -85,6 +85,13 @@
           "maximum": 10,
           "description": "Number of branch name suggestions to generate (1-10)",
           "order": 6
+        },
+        "branchai.reasoningEffort": {
+          "type": "string",
+          "default": "medium",
+          "enum": ["none", "minimal", "low", "medium", "high", "xhigh"],
+          "description": "Reasoning effort for models that support extended thinking (e.g., gpt-5.1, gpt-5-pro). Controls the amount of reasoning tokens used. Higher values produce more thoughtful responses but take longer and cost more.",
+          "order": 7
         }
       }
     }
