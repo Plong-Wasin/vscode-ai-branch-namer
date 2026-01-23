@@ -85,17 +85,6 @@
           "maximum": 10,
           "description": "Number of branch name suggestions to generate (1-10)",
           "order": 6
-        },
-        "branchai.defaultInputMode": {
-          "type": "string",
-          "default": "diff",
-          "enum": ["diff", "commit-message"],
-          "enumDescriptions": [
-            "Use git diff to generate branch names (default)",
-            "Prompt user for commit message to generate branch names"
-          ],
-          "description": "Default input mode for generating branch names",
-          "order": 7
         }
       }
     }

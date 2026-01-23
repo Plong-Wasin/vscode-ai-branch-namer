@@ -43,7 +43,6 @@ BranchAI requires configuration to connect to your AI service provider. Configur
 | `branchai.timeout` | Request timeout in milliseconds | `30000` (30s) | 5000-120000 |
 | `branchai.temperature` | Temperature for AI response randomness | `0.7` | 0-2 |
 | `branchai.suggestionCount` | Number of branch name suggestions to generate | `5` | 1-10 |
-| `branchai.defaultInputMode` | Default input mode for generating branch names | `diff` | diff, commit-message |
 
 ### Configuration Example
 
@@ -54,8 +53,7 @@ BranchAI requires configuration to connect to your AI service provider. Configur
   "branchai.model": "gpt-3.5-turbo",
   "branchai.timeout": 30000,
   "branchai.temperature": 0.7,
-  "branchai.suggestionCount": 5,
-  "branchai.defaultInputMode": "diff"
+  "branchai.suggestionCount": 5
 }
 ```
 
