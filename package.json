@@ -2,7 +2,7 @@
   "name": "branchai",
   "displayName": "BranchAI",
   "description": "AI-powered Git branch name generator for VSCode",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/Plong-Wasin/vscode-ai-branch-namer.git"
@@ -92,6 +92,13 @@
           "enum": ["none", "minimal", "low", "medium", "high", "xhigh"],
           "description": "Reasoning effort for models that support extended thinking (e.g., gpt-5.1, gpt-5-pro). Controls the amount of reasoning tokens used. Higher values produce more thoughtful responses but take longer and cost more.",
           "order": 7
+        },
+        "branchai.maxCompletionTokens": {
+          "type": "number",
+          "default": 200,
+          "minimum": 0,
+          "description": "Maximum number of tokens that can be generated for a completion, including visible output tokens and reasoning tokens. Set to 0 for no limit.",
+          "order": 8
         }
       }
     }

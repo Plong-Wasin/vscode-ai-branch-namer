@@ -16,6 +16,7 @@ export interface AIConfiguration {
 	temperature: number;
 	suggestionCount: number;
 	reasoningEffort?: ReasoningEffort;
+	maxCompletionTokens: number;
 }
 
 /**
@@ -184,9 +185,13 @@ ${context.trim()}`;
 						content: prompt
 					}
 				],
-				temperature: this.config.temperature,
-				max_tokens: 200
+				temperature: this.config.temperature
 			};
+
+			// Only include max_completion_tokens if it's greater than 0 (0 means no limit)
+			if (this.config.maxCompletionTokens > 0) {
+				requestBody.max_completion_tokens = this.config.maxCompletionTokens;
+			}
 
 			// Include reasoning_effort if configured (for models that support it)
 			if (this.config.reasoningEffort) {
@@ -321,6 +326,10 @@ export function loadAIConfiguration(): AIConfiguration {
 		}
 	}
 	
+	// Load and validate max completion tokens (0 means no limit)
+	const maxCompletionTokens = config.get<number>('maxCompletionTokens', 200);
+	const validatedMaxCompletionTokens = Math.max(0, maxCompletionTokens);
+	
 	return {
 		apiEndpoint: config.get<string>('apiEndpoint', 'https://api.openai.com/v1'),
 		apiKey: config.get<string>('apiKey', ''),
@@ -328,6 +337,7 @@ export function loadAIConfiguration(): AIConfiguration {
 		timeout: config.get<number>('timeout', 30000),
 		temperature: config.get<number>('temperature', 0.7),
 		suggestionCount: validatedCount,
-		reasoningEffort: validatedReasoningEffort
+		reasoningEffort: validatedReasoningEffort,
+		maxCompletionTokens: validatedMaxCompletionTokens
 	};
 }
