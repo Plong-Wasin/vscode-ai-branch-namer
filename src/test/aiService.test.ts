@@ -164,7 +164,8 @@ suite('AIService - Reasoning Effort Configuration', () => {
 				timeout: 30000,
 				temperature: 0.7,
 				suggestionCount: 5,
-				reasoningEffort: 'high'
+				reasoningEffort: 'high',
+				maxCompletionTokens: 200
 			};
 
 			const service = new AIService(config);
@@ -181,7 +182,8 @@ suite('AIService - Reasoning Effort Configuration', () => {
 				model: 'gpt-4',
 				timeout: 30000,
 				temperature: 0.7,
-				suggestionCount: 5
+				suggestionCount: 5,
+				maxCompletionTokens: 200
 			};
 
 			const service = new AIService(config);
@@ -199,7 +201,8 @@ suite('AIService - Reasoning Effort Configuration', () => {
 				timeout: 30000,
 				temperature: 0.7,
 				suggestionCount: 5,
-				reasoningEffort: 'invalid' as any
+				reasoningEffort: 'invalid' as any,
+				maxCompletionTokens: 200
 			};
 
 			const service = new AIService(config);
@@ -217,7 +220,8 @@ suite('AIService - Reasoning Effort Configuration', () => {
 				timeout: 30000,
 				temperature: 0.7,
 				suggestionCount: 5,
-				reasoningEffort: 'invalid' as any
+				reasoningEffort: 'invalid' as any,
+				maxCompletionTokens: 200
 			};
 
 			const service = new AIService(config);
@@ -236,7 +240,8 @@ suite('AIService - Reasoning Effort Configuration', () => {
 				model: 'gpt-3.5-turbo',
 				timeout: 30000,
 				temperature: 0.7,
-				suggestionCount: 5
+				suggestionCount: 5,
+				maxCompletionTokens: 200
 			};
 
 			const service = new AIService(config);
