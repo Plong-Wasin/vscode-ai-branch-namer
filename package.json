@@ -2,7 +2,7 @@
   "name": "branchai",
   "displayName": "BranchAI",
   "description": "AI-powered Git branch name generator for VSCode",
-  "version": "0.0.2",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/Plong-Wasin/vscode-ai-branch-namer.git"
@@ -39,6 +39,32 @@
         "command": "branchai.openSettings",
         "title": "Open Settings",
         "category": "BranchAI"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "submenu": "branchai.menu",
+          "when": "scmProvider == git",
+          "group": "navigation"
+        }
+      ],
+      "branchai.menu": [
+        {
+          "command": "branchai.generateBranchName",
+          "group": "navigation"
+        },
+        {
+          "command": "branchai.generateBranchFromCommitMessage",
+          "group": "navigation"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "branchai.menu",
+        "label": "BranchAI",
+        "icon": "$(git-branch)"
       }
     ],
     "configuration": {
@@ -89,7 +115,14 @@
         "branchai.reasoningEffort": {
           "type": "string",
           "default": "medium",
-          "enum": ["none", "minimal", "low", "medium", "high", "xhigh"],
+          "enum": [
+            "none",
+            "minimal",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ],
           "description": "Reasoning effort for models that support extended thinking (e.g., gpt-5.1, gpt-5-pro). Controls the amount of reasoning tokens used. Higher values produce more thoughtful responses but take longer and cost more.",
           "order": 7
         },
