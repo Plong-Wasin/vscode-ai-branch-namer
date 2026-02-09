@@ -143,7 +143,7 @@ export class AIService {
 		let prompt = `You are a helpful assistant that generates Git branch names. Generate ${count} branch name suggestions based on the user's work context.
 
 Requirements:
-- Use conventional branch naming prefixes: feature/, bugfix/, hotfix/, refactor/, docs/, test/, chore/
+- Use conventional branch naming prefixes: feature/, fix/, hotfix/, refactor/, docs/, test/, chore/
 - Use kebab-case for the branch name
 - Keep names concise but descriptive (max 50 characters)
 - Follow the format: prefix/description

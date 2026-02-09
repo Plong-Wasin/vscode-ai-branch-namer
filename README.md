@@ -12,7 +12,7 @@ BranchAI helps developers create meaningful, consistent branch names that follow
 - **Dual Input Modes**: Generate branch names from git diff OR user-provided commit messages
 - **Configurable Suggestion Count**: Choose how many suggestions to generate (1-10)
 - **Git Diff Context**: Analyzes actual code changes for more accurate branch names
-- **Conventional Branch Naming**: Follows Git branching conventions (feature/, bugfix/, hotfix/, etc.)
+- **Conventional Branch Naming**: Follows Git branching conventions (feature/, fix/, hotfix/, etc.)
 - **Quick Pick UI**: Easy-to-use interface for selecting and creating branches
 - **Git Integration**: Seamlessly creates branches using `git switch -c`
 - **Flexible Configuration**: Support for any OpenAI-compatible API provider
@@ -134,7 +134,7 @@ BranchAI works with any OpenAI-compatible API provider:
 BranchAI generates conventional branch names like:
 
 - `feature/user-authentication`
-- `bugfix/login-error-handling`
+- `fix/login-error-handling`
 - `hotfix/security-vulnerability`
 - `refactor/code-cleanup`
 - `docs/readme-update`
@@ -156,7 +156,7 @@ By analyzing **staged** code changes through `git diff --cached`, BranchAI gener
 
 The staged diff context helps the AI understand:
 - What functionality is being added or modified
-- The nature of the changes (bugfix, feature, refactor)
+- The nature of the changes (fix, feature, refactor)
 - Specific components or modules affected
 - The technical implementation details
 
@@ -185,7 +185,7 @@ You can also generate branch names by providing your own commit message, which i
 
 **Multi-line commit message:**
 - Input: "Fix login error handling\n\nThis commit adds proper error handling for:\n- Invalid credentials\n- Network timeouts\n- Server errors"
-- Suggestion: `bugfix/login-error-handling`
+- Suggestion: `fix/login-error-handling`
 
 **Bullet point style:**
 - Input: "Refactor code cleanup: remove unused imports, optimize database queries, improve error messages"

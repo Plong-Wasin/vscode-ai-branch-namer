@@ -57,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quick pick UI for selecting from 5 AI-generated suggestions
 - Git integration for creating branches using `git switch -c`
 - Configuration settings for AI service (API endpoint, API key, model, timeout, temperature)
-- Support for conventional branch naming prefixes (feature/, bugfix/, hotfix/, refactor/, docs/, test/, chore/)
+- Support for conventional branch naming prefixes (feature/, fix/, hotfix/, refactor/, docs/, test/, chore/)
 - Context-aware suggestions based on current Git status
 - Configuration validation on extension activation
 - Error handling for API failures, Git errors, and configuration issues

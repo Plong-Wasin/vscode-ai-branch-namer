@@ -2,7 +2,7 @@
   "name": "branchai",
   "displayName": "BranchAI",
   "description": "AI-powered Git branch name generator for VSCode",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/Plong-Wasin/vscode-ai-branch-namer.git"
